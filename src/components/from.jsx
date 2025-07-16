@@ -1,5 +1,6 @@
 import axios from "axios";
-import  { useState } from "react";
+import { useState } from "react";
+import Swal from "sweetalert2";
 const imageHostingKey = import.meta.env.VITE_IMAGE_API;
 const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 
@@ -94,14 +95,14 @@ const From = () => {
         for (const key in formData) {
             if (
                 formData[key] &&
-                typeof formData[key] !== "object" // skip files for now
+                typeof formData[key] !== "object"
             ) {
                 payload[key] = formData[key];
             }
         }
 
         try {
-            // Helper function to upload single image to ImgBB
+            // Upload images
             const uploadImage = async (file) => {
                 const imageFormData = new FormData();
                 imageFormData.append("image", file);
@@ -109,28 +110,43 @@ const From = () => {
                 return res.data.data.url;
             };
 
-            // Upload all three images
             const [frontUrl, backUrl, selfieUrl] = await Promise.all([
                 uploadImage(formData.id_proof_front),
                 uploadImage(formData.id_proof_back),
                 uploadImage(formData.photo_selfie),
             ]);
 
-            // Add image URLs to payload
             payload.id_proof_front_url = frontUrl;
             payload.id_proof_back_url = backUrl;
             payload.photo_selfie_url = selfieUrl;
 
-            console.log("Final Payload:", payload);
-            alert("Form submitted successfully!");
+            // Send to MongoDB server via Express
+            const res = await axios.post("http://localhost:5000/apply", payload);
+            if (res.data.insertedId) {
 
-            // Submit payload to your backend (optional)
-            // await Axios.post("/your-backend-endpoint", payload);
+                Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Your apply is submitted",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                    timer: 1500
+
+                });
+            }
+
         } catch (err) {
-            console.error("Image upload or form submission failed:", err);
-            alert("Submission failed. Please try again.");
+            console.error("Submission error:", err);
+            alert("Something went wrong.");
         }
     };
+
 
     return (
         <div className="max-w-3xl mx-auto p-6 bg-gray-900 rounded-lg text-gray-100 font-sans">
