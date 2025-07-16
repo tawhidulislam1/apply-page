@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import axios from "axios";
+import  { useState } from "react";
+const imageHostingKey = import.meta.env.VITE_IMAGE_API;
+const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 
 const From = () => {
     const [formData, setFormData] = useState({
@@ -83,26 +86,50 @@ const From = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!validate()) {
-            return;
-        }
+        if (!validate()) return;
 
-        const data = new FormData();
-        for (const key in formData) {
-            if (formData[key]) data.append(key, formData[key]);
-        }
-        // Assuming formData is an object of key-value pairs, convert it to JSON
         const payload = {};
-
         for (const key in formData) {
-            if (formData[key]) {
+            if (
+                formData[key] &&
+                typeof formData[key] !== "object" // skip files for now
+            ) {
                 payload[key] = formData[key];
             }
         }
-        // Example: Replace with actual submission logic
-        alert("Form submitted!");
+
+        try {
+            // Helper function to upload single image to ImgBB
+            const uploadImage = async (file) => {
+                const imageFormData = new FormData();
+                imageFormData.append("image", file);
+                const res = await axios.post(imageHostingApi, imageFormData);
+                return res.data.data.url;
+            };
+
+            // Upload all three images
+            const [frontUrl, backUrl, selfieUrl] = await Promise.all([
+                uploadImage(formData.id_proof_front),
+                uploadImage(formData.id_proof_back),
+                uploadImage(formData.photo_selfie),
+            ]);
+
+            // Add image URLs to payload
+            payload.id_proof_front_url = frontUrl;
+            payload.id_proof_back_url = backUrl;
+            payload.photo_selfie_url = selfieUrl;
+
+            console.log("Final Payload:", payload);
+            alert("Form submitted successfully!");
+
+            // Submit payload to your backend (optional)
+            // await Axios.post("/your-backend-endpoint", payload);
+        } catch (err) {
+            console.error("Image upload or form submission failed:", err);
+            alert("Submission failed. Please try again.");
+        }
     };
 
     return (
@@ -406,100 +433,100 @@ const From = () => {
 
                 {/* File Uploads */}
                 {[
-    {
-        id: "id_proof_front",
-        label: "Upload Front part of your ID",
-        name: "id_proof_front",
-        preview: previews.id_proof_front,
-        error: errors.id_proof_front,
-    },
-    {
-        id: "id_proof_back",
-        label: "Upload Back part of your ID",
-        name: "id_proof_back",
-        preview: previews.id_proof_back,
-        error: errors.id_proof_back,
-    },
-    {
-        id: "photo_selfie",
-        label: "Upload Your Selfie",
-        name: "photo_selfie",
-        preview: previews.photo_selfie,
-        error: errors.photo_selfie,
-    },
-].map(({ id, label, name, preview, error }) => {
-    const getIcon = (type) => {
-        switch (type) {
-            case "id_proof_front":
-                return (
-                    <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                            d="M5 6h14M5 6a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2M5 6l1.5-2h11L19 6" />
-                    </svg>
-                );
-            case "id_proof_back":
-                return (
-                    <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                            d="M4 4h16v16H4V4zm4 4h8v8H8V8z" />
-                    </svg>
-                );
-            case "photo_selfie":
-                return (
-                    <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                            d="M12 12c2.28 0 4-1.72 4-4s-1.72-4-4-4-4 1.72-4 4 1.72 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                    </svg>
-                );
-            default:
-                return null;
-        }
-    };
+                    {
+                        id: "id_proof_front",
+                        label: "Upload Front part of your ID",
+                        name: "id_proof_front",
+                        preview: previews.id_proof_front,
+                        error: errors.id_proof_front,
+                    },
+                    {
+                        id: "id_proof_back",
+                        label: "Upload Back part of your ID",
+                        name: "id_proof_back",
+                        preview: previews.id_proof_back,
+                        error: errors.id_proof_back,
+                    },
+                    {
+                        id: "photo_selfie",
+                        label: "Upload Your Selfie",
+                        name: "photo_selfie",
+                        preview: previews.photo_selfie,
+                        error: errors.photo_selfie,
+                    },
+                ].map(({ id, label, name, preview, error }) => {
+                    const getIcon = (type) => {
+                        switch (type) {
+                            case "id_proof_front":
+                                return (
+                                    <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                            d="M5 6h14M5 6a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2M5 6l1.5-2h11L19 6" />
+                                    </svg>
+                                );
+                            case "id_proof_back":
+                                return (
+                                    <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                            d="M4 4h16v16H4V4zm4 4h8v8H8V8z" />
+                                    </svg>
+                                );
+                            case "photo_selfie":
+                                return (
+                                    <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                            d="M12 12c2.28 0 4-1.72 4-4s-1.72-4-4-4-4 1.72-4 4 1.72 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                    </svg>
+                                );
+                            default:
+                                return null;
+                        }
+                    };
 
-    return (
-        <div key={id} className="mb-6">
-            <label className="block font-semibold mb-1" htmlFor={id}>
-                <span className="text-white flex items-center gap-2">
-                    {getIcon(id)}
-                    {label}:
-                    <span className="text-gray-400 text-sm font-normal">(important)</span>
-                </span>
-            </label>
+                    return (
+                        <div key={id} className="mb-6">
+                            <label className="block font-semibold mb-1" htmlFor={id}>
+                                <span className="text-white flex items-center gap-2">
+                                    {getIcon(id)}
+                                    {label}:
+                                    <span className="text-gray-400 text-sm font-normal">(important)</span>
+                                </span>
+                            </label>
 
-            {/* Hidden file input */}
-            <input
-                type="file"
-                id={id}
-                name={name}
-                accept="image/*"
-                onChange={handleFileChange}
-                className="hidden"
-            />
+                            {/* Hidden file input */}
+                            <input
+                                type="file"
+                                id={id}
+                                name={name}
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                className="hidden"
+                            />
 
-            {/* Custom styled label as button */}
-            <label
-                htmlFor={id}
-                className={`cursor-pointer inline-flex items-center gap-2 border rounded-md px-4 py-2 transition
+                            {/* Custom styled label as button */}
+                            <label
+                                htmlFor={id}
+                                className={`cursor-pointer inline-flex items-center gap-2 border rounded-md px-4 py-2 transition
                 ${error ? "border-red-600 text-red-600" : "border-green-400 text-green-400 hover:bg-green-900/20"}`}
-            >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 12l-4-4m0 0l-4 4m4-4v12" />
-                </svg>
-                <span className="font-semibold text-white">{label}</span>
-            </label>
+                            >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                        d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 12l-4-4m0 0l-4 4m4-4v12" />
+                                </svg>
+                                <span className="font-semibold text-white">{label}</span>
+                            </label>
 
-            {/* Preview image if uploaded */}
-            {preview && (
-                <img
-                    src={preview}
-                    alt={`${label} preview`}
-                    className="mt-2 max-h-40 rounded border border-gray-700 object-contain"
-                />
-            )}
-        </div>
-    );
-})}
+                            {/* Preview image if uploaded */}
+                            {preview && (
+                                <img
+                                    src={preview}
+                                    alt={`${label} preview`}
+                                    className="mt-2 max-h-40 rounded border border-gray-700 object-contain"
+                                />
+                            )}
+                        </div>
+                    );
+                })}
 
 
                 {/* References */}
