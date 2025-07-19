@@ -30,7 +30,7 @@ const Register = () => {
                     icon: "success",
                     confirmButtonColor: "#10B981",
                 });
-                navigate("/apply");
+                navigate("/dashboard/apply");
             })
             .catch((err) => {
                 Swal.fire({

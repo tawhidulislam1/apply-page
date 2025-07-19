@@ -50,7 +50,7 @@ const FormList = () => {
                 <td>
                   {/* Replace with modal or route link if needed */}
                   <Link
-                    to={`/apply/view/${form._id}`}
+                    to={`/dashboard/view/${form._id}`}
                     className="btn btn-sm btn-primary"
                   >
                     View

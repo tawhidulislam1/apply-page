@@ -12,6 +12,9 @@ import AuthProvider from './Provider/authProvider.jsx';
 import Login from './dashboard/login.jsx';
 import Register from './dashboard/register.jsx';
 import PrivateRoute from './router/privateRouter.jsx';
+import DashboardLayout from './dashboard/DashboardLayout.jsx';
+import Promoters from './dashboard/Promoters/Promoters.jsx';
+import AddNew from './dashboard/Promoters/AddNew.jsx';
 
 const router = createBrowserRouter([
   {
@@ -19,13 +22,28 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: '/apply',
-    element: <PrivateRoute><FormList></FormList></PrivateRoute>,
-  },
-  {
-    path: '/apply/view/:id',
-    element: <PrivateRoute> <FormDetails /></PrivateRoute>
-  },
+    path: 'dashboard',
+    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+    children: [
+      {
+        path: 'apply',
+        element: <FormList />
+      },
+      {
+        path: 'view/:id',
+        element: <FormDetails />
+      },
+      {
+        path: 'promoters',
+        element: <Promoters />
+      },
+      {
+        path: 'add-new-promoters',
+        element: <AddNew />
+      },
+    ]
+  }
+  ,
   {
     path: '/admin/login',
     element: <Login></Login>
@@ -34,6 +52,7 @@ const router = createBrowserRouter([
     path: '/admin/register',
     element: <Register></Register>
   },
+
 ]);
 
 createRoot(document.getElementById('root')).render(

@@ -79,7 +79,7 @@ const FormDetails = () => {
                     </div>
 
                     <div className="mt-6 text-right">
-                        <Link to="/apply" className="btn btn-outline btn-primary">
+                        <Link to="/dashboard/apply" className="btn btn-outline btn-primary">
                             Back to Applications
                         </Link>
                     </div>
