@@ -1,11 +1,12 @@
 
 
 import { useState } from 'react';
-import { FaAd, FaBlog, FaCalendar, FaHome, FaPaypal, FaSearch, FaShoppingCart, FaUsers } from 'react-icons/fa';
+import { AiOutlineFork } from 'react-icons/ai';
+import { FaHome, } from 'react-icons/fa';
 
 import { IoIosClose } from 'react-icons/io';
-import { MdMenu, MdOutlineBloodtype } from 'react-icons/md';
-import { NavLink, Outlet } from 'react-router-dom';
+import { MdMenu, MdOutlineSettingsApplications } from 'react-icons/md';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 
 
 
@@ -16,14 +17,15 @@ const DashboardLayout = () => {
         <div>
             <div className="flex flex-col sm:flex-row">
                 {/* Sidebar */}
-                <div className={`w-full sm:w-64 min-h-screen bg-[#089662] text-white transition-all ${isSidebarOpen ? 'block' : 'hidden'} sm:block`}>
+                <div className={`w-full text-lg md:text-xl sm:w-64 min-h-screen bg-[#089662] text-white transition-all ${isSidebarOpen ? 'block' : 'hidden'} sm:block`}>
                     <ul className="menu">
                         <div className="divider"></div>
                         {/* Home page redirect */}
-                        <li><NavLink to={'/'}><FaHome /> Home</NavLink></li>
-                        <li><NavLink to={'/dashboard/apply'}><FaSearch /> Rental Application</NavLink></li>
-                        <li><NavLink to={'/dashboard/promoters'}><FaBlog /> Promoters</NavLink></li>
-                        <li><NavLink to={'/donation-request'}><FaAd /> donation-request</NavLink></li>
+                        <li className='text-xl md:text-xl'><NavLink to={'/'}><FaHome /> Home</NavLink></li>
+                        <li className='text-xl md:text-xl'><NavLink to={'/dashboard/apply'}><MdOutlineSettingsApplications />
+                            Rental Application</NavLink></li>
+                        <li className='text-xl md:text-xl'><NavLink to={'/dashboard/promoters'}><AiOutlineFork />
+                            Promoters </NavLink></li>
                     </ul>
                 </div>
 

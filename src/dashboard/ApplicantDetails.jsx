@@ -39,8 +39,8 @@ const FormList = () => {
             </tr>
           </thead>
           <tbody>
-            {forms.map((form, index) => (
-              <tr key={index}>
+            {[...forms].reverse().map((form, index) => (
+              <tr key={form._id}>
                 <td>{index + 1}</td>
                 <td>{form.first_name} {form.last_name}</td>
                 <td>{form.phone_number}</td>
@@ -48,7 +48,6 @@ const FormList = () => {
                 <td>{form.referrer}</td>
                 <td>{form.apply_date}</td>
                 <td>
-                  {/* Replace with modal or route link if needed */}
                   <Link
                     to={`/dashboard/view/${form._id}`}
                     className="btn btn-sm btn-primary"
@@ -59,6 +58,7 @@ const FormList = () => {
               </tr>
             ))}
           </tbody>
+
         </table>
       </div>
     </div>

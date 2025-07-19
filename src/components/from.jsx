@@ -162,7 +162,7 @@ const From = () => {
             <form onSubmit={handleSubmit} encType="multipart/form-data" noValidate>
                 {/* Move-in Date */}
                 <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="move_in_date">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="move_in_date">
                         Move-in Date:{" "}
                         <span className="text-gray-500 text-sm font-normal">(important)</span>
                     </label>
@@ -180,7 +180,7 @@ const From = () => {
 
                 {/* Applying As */}
                 <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="applying_as">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="applying_as">
                         Applying as:{" "}
                         <span className="text-gray-500 text-sm font-normal">
                             (I am applying as a guarantor or a tenant)
@@ -203,7 +203,7 @@ const From = () => {
 
                 {/* First Name */}
                 <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="first_name">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="first_name">
                         First Name: <span className="text-gray-500 text-sm font-normal">(important)</span>
                     </label>
                     <input
@@ -221,7 +221,7 @@ const From = () => {
 
                 {/* Last Name */}
                 <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="last_name">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="last_name">
                         Last Name: <span className="text-gray-500 text-sm font-normal">(important)</span>
                     </label>
                     <input
@@ -239,7 +239,7 @@ const From = () => {
 
                 {/* Date of Birth */}
                 <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="date_of_birth">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="date_of_birth">
                         Date of Birth: <span className="text-gray-500 text-sm font-normal">(important)</span>
                     </label>
                     <input
@@ -256,7 +256,7 @@ const From = () => {
 
                 {/* Social Security Number */}
                 <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="social_security_number">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="social_security_number">
                         Social Security Number:{" "}
                         <span className="text-gray-500 text-sm font-normal">(important)</span>
                     </label>
@@ -275,7 +275,7 @@ const From = () => {
 
                 {/* Phone Number */}
                 <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="phone_number">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="phone_number">
                         Phone Number:{" "}
                         <span className="text-gray-500 text-sm font-normal">
                             <i className="fa-solid fa-flag-usa mr-1"></i> (+1 ***-***-****)
@@ -296,7 +296,7 @@ const From = () => {
 
                 {/* Email */}
                 <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="email">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="email">
                         Email: <span className="text-gray-500 text-sm font-normal">(important)</span>
                     </label>
                     <input
@@ -314,7 +314,7 @@ const From = () => {
 
                 {/* Current Address */}
                 {/* <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="current_address">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="current_address">
                         Current Address:{" "}
                         <span className="text-gray-500 text-sm font-normal">(important)</span>
                     </label>
@@ -333,7 +333,7 @@ const From = () => {
                 {/* Address Grid: City and State */}
                 {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                     <div>
-                        <label className="block font-semibold mb-1" htmlFor="city">
+                        <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="city">
                             City: <span className="text-gray-500 text-sm font-normal">(important)</span>
                         </label>
                         <input
@@ -349,7 +349,7 @@ const From = () => {
                         />
                     </div>
                     <div>
-                        <label className="block font-semibold mb-1" htmlFor="state_province">
+                        <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="state_province">
                             State/Province:{" "}
                             <span className="text-gray-500 text-sm font-normal">(important)</span>
                         </label>
@@ -370,7 +370,7 @@ const From = () => {
                 {/* Address Grid: ZIP and Country */}
                 {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                     <div>
-                        <label className="block font-semibold mb-1" htmlFor="zip_postal_code">
+                        <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="zip_postal_code">
                             ZIP/Postal Code:{" "}
                             <span className="text-gray-500 text-sm font-normal">(important)</span>
                         </label>
@@ -387,7 +387,7 @@ const From = () => {
                         />
                     </div>
                     <div>
-                        <label className="block font-semibold mb-1" htmlFor="country">
+                        <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="country">
                             Country: <span className="text-gray-500 text-sm font-normal">(important)</span>
                         </label>
                         <input
@@ -406,7 +406,7 @@ const From = () => {
 
                 {/* Employer Name */}
                 <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="employer_name">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="employer_name">
                         Employer Name: <span className="text-gray-500 text-sm font-normal">(Optional)</span>
                     </label>
                     <input
@@ -422,7 +422,7 @@ const From = () => {
 
                 {/* Job Title */}
                 <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="job_title">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="job_title">
                         Job Title: <span className="text-gray-500 text-sm font-normal">(Optional)</span>
                     </label>
                     <input
@@ -438,7 +438,7 @@ const From = () => {
 
                 {/* Monthly Income */}
                 <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="monthly_income">
+                    <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor="monthly_income">
                         Monthly Income: <span className="text-gray-500 text-sm font-normal">(important)</span>
                     </label>
                     <input
@@ -512,7 +512,7 @@ const From = () => {
 
                     return (
                         <div key={id} className="mb-6">
-                            <label className="block font-semibold mb-1" htmlFor={id}>
+                            <label className="block font-semibold mb-1 text-lg md:text-xl" htmlFor={id}>
                                 <span className="text-white flex items-center gap-2">
                                     {getIcon(id)}
                                     {label}:
@@ -557,7 +557,7 @@ const From = () => {
 
                 <button
                     type="submit"
-                    className="btn btn-primary w-full max-w-sm mx-auto block"
+                    className="btn btn-primary w-full max-w-sm mx-auto block text-lg md:text-xl"
                     aria-label="Submit Application"
                 >
                     <i className="fas fa-paper-plane mr-2"></i> Submit Application

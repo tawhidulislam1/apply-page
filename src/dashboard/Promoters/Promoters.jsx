@@ -19,6 +19,15 @@ const Promoters = () => {
     }, []);
 
     const handleCopy = (link) => {
+        if (!link) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'No referral link available to copy!',
+            });
+            return;
+        }
+
         navigator.clipboard.writeText(link)
             .then(() => {
                 Swal.fire({
@@ -39,9 +48,10 @@ const Promoters = () => {
             });
     };
 
+    const reversedPromoters = [...promoters].reverse();
+
     return (
         <div className="p-4">
-            {/* Top bar with button */}
             <div className="flex justify-end mb-4">
                 <Link to={'/dashboard/add-new-promoters'}>
                     <button className="btn btn-primary">
@@ -50,7 +60,6 @@ const Promoters = () => {
                 </Link>
             </div>
 
-            {/* Table */}
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
                     <thead>
@@ -63,18 +72,18 @@ const Promoters = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {promoters.length > 0 ? (
-                            promoters.map((promoter, index) => (
+                        {reversedPromoters.length > 0 ? (
+                            reversedPromoters.map((promoter, index) => (
                                 <tr key={promoter._id}>
                                     <td>{index + 1}</td>
                                     <td>{promoter.name}</td>
                                     <td>{promoter.email}</td>
                                     <td>{promoter.trackingCode || '—'}</td>
-                                    
                                     <td>
                                         <button
                                             className="btn btn-sm btn-outline"
                                             onClick={() => handleCopy(promoter.referralLink)}
+                                            aria-label={`Copy referral link for ${promoter.name}`}
                                         >
                                             Copy Link
                                         </button>
@@ -83,7 +92,7 @@ const Promoters = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="6" className="text-center">No promoters found</td>
+                                <td colSpan="5" className="text-center">No promoters found</td>
                             </tr>
                         )}
                     </tbody>
