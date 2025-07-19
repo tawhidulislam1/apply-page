@@ -33,8 +33,8 @@ const FormList = () => {
               <th>Full Name</th>
               <th>Phone</th>
               <th>Email</th>
-              <th>Applying As</th>
-              <th>Move-in</th>
+              <th>Promoter</th>
+              <th>Date</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -45,8 +45,8 @@ const FormList = () => {
                 <td>{form.first_name} {form.last_name}</td>
                 <td>{form.phone_number}</td>
                 <td>{form.email}</td>
-                <td>{form.applying_as}</td>
-                <td>{form.move_in_date}</td>
+                <td>{form.referrer}</td>
+                <td>{form.apply_date}</td>
                 <td>
                   {/* Replace with modal or route link if needed */}
                   <Link

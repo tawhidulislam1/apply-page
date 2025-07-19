@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const FormDetails = () => {
     const { id } = useParams();
@@ -19,6 +20,18 @@ const FormDetails = () => {
             });
     }, [id]);
 
+    const handleCopyReferral = () => {
+        const baseURL = window.location.origin;
+        const referralLink = `${baseURL}/?ref=${form.referrer}`;
+        navigator.clipboard.writeText(referralLink)
+            .then(() => {
+                Swal.fire("Copied!", "Referral link has been copied.", "success");
+            })
+            .catch(() => {
+                Swal.fire("Failed", "Unable to copy referral link.", "error");
+            });
+    };
+
     if (loading) return <div className="text-center mt-10">Loading...</div>;
     if (!form) return <div className="text-center mt-10 text-red-600">Form not found</div>;
 
@@ -26,39 +39,36 @@ const FormDetails = () => {
         <div className="w-full min-h-screen bg-base-200 px-4 py-10">
             <div className="max-w-4xl mx-auto card bg-base-100 shadow-xl border">
                 <div className="card-body">
-                    <h2 className="card-title text-2xl">
+                    <h2 className="card-title text-2xl mb-2">
                         {form.first_name} {form.last_name}
                     </h2>
 
                     <div className="grid md:grid-cols-2 gap-4 mt-4">
                         <div>
                             <p><strong>Applying As:</strong> {form.applying_as}</p>
-                            <p><strong>DOB:</strong> {form.date_of_birth}</p>
+                            <p><strong>Date of Birth:</strong> {form.date_of_birth}</p>
                             <p><strong>Phone:</strong> {form.phone_number}</p>
                             <p><strong>Email:</strong> {form.email}</p>
                             <p><strong>Move-in Date:</strong> {form.move_in_date}</p>
+                            <p><strong>Apply Date:</strong> {form.apply_date}</p>
+                            <p className="mt-2"><strong>Referrer:</strong> {form.referrer}</p>
+                            <button
+                                onClick={handleCopyReferral}
+                                className="btn btn-sm mt-1 btn-outline btn-info"
+                            >
+                                Copy Referral Link
+                            </button>
                         </div>
                         <div>
-                            <p><strong>Address:</strong></p>
-                            <p>{form.current_address}</p>
-                            <p>{form.city}, {form.state_province}</p>
-                            <p>{form.zip_postal_code}, {form.country}</p>
+                            <div>
+                                <p><strong>Employer:</strong> {form.employer_name}</p>
+                                <p><strong>Job Title:</strong> {form.job_title}</p>
+                                <p><strong>Monthly Income:</strong> ${form.monthly_income}</p>
+                            </div>
+                            <p><strong>References:</strong> {form.referrer || "N/A"}</p>
+                            <p><strong>Apply Date:</strong> {form.apply_date || "N/A"}</p>
                         </div>
-                    </div>
 
-                    <div className="divider" />
-
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <p><strong>Employer:</strong> {form.employer_name}</p>
-                            <p><strong>Job Title:</strong> {form.job_title}</p>
-                            <p><strong>Monthly Income:</strong> ${form.monthly_income}</p>
-                        </div>
-                        <div>
-                            <p><strong>References:</strong> {form.references}</p>
-                            <p><strong>Comments:</strong> {form.additional_comments}</p>
-                            <p><strong>SSN:</strong> {form.social_security_number}</p>
-                        </div>
                     </div>
 
                     <div className="divider" />

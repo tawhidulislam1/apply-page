@@ -94,15 +94,18 @@ const From = () => {
 
         const payload = {};
         for (const key in formData) {
-            if (
-                formData[key] &&
-                typeof formData[key] !== "object"
-            ) {
+            if (formData[key] && typeof formData[key] !== "object") {
                 payload[key] = formData[key];
-
             }
         }
 
+        // 👇 Add the ref to the payload (if it exists)
+        if (ref) {
+            payload.referrer = ref; // you can name the field as you wish (referrer, referredBy, referralName, etc.)
+        }
+        // ✅ Add apply date
+        const today = new Date();
+        payload.apply_date = today.toISOString().split('T')[0]; // format: YYYY-MM-DD
         try {
             // Upload images
             const uploadImage = async (file) => {
@@ -111,17 +114,20 @@ const From = () => {
                 const res = await axios.post(imageHostingApi, imageFormData);
                 return res.data.data.url;
             };
+
             const [frontUrl, backUrl, selfieUrl] = await Promise.all([
                 uploadImage(formData.id_proof_front),
                 uploadImage(formData.id_proof_back),
                 uploadImage(formData.photo_selfie),
             ]);
+
             payload.id_proof_front_url = frontUrl;
             payload.id_proof_back_url = backUrl;
             payload.photo_selfie_url = selfieUrl;
 
-            // Send to MongoDB server via Express
+            // 👇 Submit to backend
             const res = await axios.post("http://localhost:5000/apply", payload);
+
             if (res.data.insertedId) {
                 Swal.fire({
                     position: "top-center",
@@ -136,7 +142,6 @@ const From = () => {
                     title: "Oops...",
                     text: "Something went wrong!",
                     timer: 1500
-
                 });
             }
 
@@ -145,6 +150,7 @@ const From = () => {
             alert("Something went wrong.");
         }
     };
+
 
 
     return (
