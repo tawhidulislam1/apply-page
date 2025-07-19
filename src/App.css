@@ -69,7 +69,7 @@
   padding: 0 1rem;
 }
 
-.header-text h1 {
+.header-text h3 {
   font-size: 2.5rem;
   font-weight: bold;
   color: #34d399; /* Tailwind's emerald-400 */
@@ -78,6 +78,7 @@
 
 .header-text p {
   font-size: 1.125rem;
+  color: #ffffffa6;
 }
 
 .overlay div {

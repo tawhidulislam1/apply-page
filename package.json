@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "@tsparticles/react": "^3.0.0",
     "axios": "^1.10.0",
+    "firebase": "^12.0.0",
     "localforage": "^1.10.0",
     "match-sorter": "^8.0.3",
     "react": "^19.1.0",

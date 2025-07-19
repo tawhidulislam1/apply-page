@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
 const imageHostingKey = import.meta.env.VITE_IMAGE_API;
 const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
@@ -14,21 +15,26 @@ const From = () => {
         social_security_number: "",
         phone_number: "",
         email: "",
-        current_address: "",
-        city: "",
-        state_province: "",
-        zip_postal_code: "",
-        country: "United States",
+        // current_address: "",
+        // city: "",
+        // state_province: "",
+        // zip_postal_code: "",
+        // country: "United States",
         employer_name: "",
         job_title: "",
         monthly_income: "",
-        references: "",
-        additional_comments: "",
         id_proof_front: null,
         id_proof_back: null,
         photo_selfie: null,
     });
+    const [searchParams] = useSearchParams();
+    let ref = searchParams.get("ref"); // যেকোনো dynamic value
 
+    // যদি quote (") দিয়ে আসে, তাহলে সেটা কেটে ফেলার লজিক
+    if (ref?.startsWith('"') && ref?.endsWith('"')) {
+        ref = ref.slice(1, -1);
+    }
+    console.log(ref);
     const [errors, setErrors] = useState({}); // For validation errors
 
     const [previews, setPreviews] = useState({
@@ -66,11 +72,6 @@ const From = () => {
             "social_security_number",
             "phone_number",
             "email",
-            "current_address",
-            "city",
-            "state_province",
-            "zip_postal_code",
-            "country",
             "monthly_income",
             "id_proof_front",
             "id_proof_back",
@@ -98,6 +99,7 @@ const From = () => {
                 typeof formData[key] !== "object"
             ) {
                 payload[key] = formData[key];
+
             }
         }
 
@@ -109,13 +111,11 @@ const From = () => {
                 const res = await axios.post(imageHostingApi, imageFormData);
                 return res.data.data.url;
             };
-
             const [frontUrl, backUrl, selfieUrl] = await Promise.all([
                 uploadImage(formData.id_proof_front),
                 uploadImage(formData.id_proof_back),
                 uploadImage(formData.photo_selfie),
             ]);
-
             payload.id_proof_front_url = frontUrl;
             payload.id_proof_back_url = backUrl;
             payload.photo_selfie_url = selfieUrl;
@@ -123,7 +123,6 @@ const From = () => {
             // Send to MongoDB server via Express
             const res = await axios.post("http://localhost:5000/apply", payload);
             if (res.data.insertedId) {
-
                 Swal.fire({
                     position: "top-center",
                     icon: "success",
@@ -150,6 +149,7 @@ const From = () => {
 
     return (
         <div className="max-w-3xl mx-auto p-6 bg-gray-900 rounded-lg text-gray-100 font-sans">
+
             <h3 className="text-xl font-bold mb-2">Rental Application</h3>
             <p className="mb-6 text-gray-400">Take the first step towards your dream home.</p>
 
@@ -307,7 +307,7 @@ const From = () => {
                 </div>
 
                 {/* Current Address */}
-                <div className="mb-5">
+                {/* <div className="mb-5">
                     <label className="block font-semibold mb-1" htmlFor="current_address">
                         Current Address:{" "}
                         <span className="text-gray-500 text-sm font-normal">(important)</span>
@@ -322,10 +322,10 @@ const From = () => {
                         onChange={handleChange}
                         required
                     />
-                </div>
+                </div> */}
 
                 {/* Address Grid: City and State */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                     <div>
                         <label className="block font-semibold mb-1" htmlFor="city">
                             City: <span className="text-gray-500 text-sm font-normal">(important)</span>
@@ -359,10 +359,10 @@ const From = () => {
                             required
                         />
                     </div>
-                </div>
+                </div> */}
 
                 {/* Address Grid: ZIP and Country */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                     <div>
                         <label className="block font-semibold mb-1" htmlFor="zip_postal_code">
                             ZIP/Postal Code:{" "}
@@ -396,7 +396,7 @@ const From = () => {
                             required
                         />
                     </div>
-                </div>
+                </div> */}
 
                 {/* Employer Name */}
                 <div className="mb-5">
@@ -455,6 +455,7 @@ const From = () => {
                         name: "id_proof_front",
                         preview: previews.id_proof_front,
                         error: errors.id_proof_front,
+                        important: ` Driver's License/State ID card important`
                     },
                     {
                         id: "id_proof_back",
@@ -462,6 +463,8 @@ const From = () => {
                         name: "id_proof_back",
                         preview: previews.id_proof_back,
                         error: errors.id_proof_back,
+                        important: ` Driver's License/State ID card important`
+
                     },
                     {
                         id: "photo_selfie",
@@ -469,8 +472,10 @@ const From = () => {
                         name: "photo_selfie",
                         preview: previews.photo_selfie,
                         error: errors.photo_selfie,
+                        important: ` Important`
+
                     },
-                ].map(({ id, label, name, preview, error }) => {
+                ].map(({ id, label, name, preview, error, important }) => {
                     const getIcon = (type) => {
                         switch (type) {
                             case "id_proof_front":
@@ -505,7 +510,7 @@ const From = () => {
                                 <span className="text-white flex items-center gap-2">
                                     {getIcon(id)}
                                     {label}:
-                                    <span className="text-gray-400 text-sm font-normal">(important)</span>
+                                    <span className="text-gray-400 text-sm font-normal">({important})</span>
                                 </span>
                             </label>
 
@@ -522,7 +527,7 @@ const From = () => {
                             {/* Custom styled label as button */}
                             <label
                                 htmlFor={id}
-                                className={`cursor-pointer inline-flex items-center gap-2 border rounded-md px-4 py-2 transition
+                                className={`cursor-pointer inline-flex items-center gap-2 border rounded-sm px-4 py-2 transition
                 ${error ? "border-red-600 text-red-600" : "border-green-400 text-green-400 hover:bg-green-900/20"}`}
                             >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -543,37 +548,6 @@ const From = () => {
                         </div>
                     );
                 })}
-
-
-                {/* References */}
-                <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="references">
-                        References: <span className="text-gray-500 text-sm font-normal">(Optional)</span>
-                    </label>
-                    <textarea
-                        id="references"
-                        name="references"
-                        rows={2}
-                        className="textarea textarea-bordered w-full  focus:border-[#24b77f] focus:outline-[#24b77f] bg-gray-800 text-gray-100"
-                        value={formData.references}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                {/* Additional Comments */}
-                <div className="mb-5">
-                    <label className="block font-semibold mb-1" htmlFor="additional_comments">
-                        Additional Comments: <span className="text-gray-500 text-sm font-normal">(Optional)</span>
-                    </label>
-                    <textarea
-                        id="additional_comments"
-                        name="additional_comments"
-                        rows={3}
-                        className="textarea textarea-bordered w-full  focus:border-[#24b77f] focus:outline-[#24b77f] bg-gray-800 text-gray-100"
-                        value={formData.additional_comments}
-                        onChange={handleChange}
-                    />
-                </div>
 
                 <button
                     type="submit"

@@ -16,7 +16,8 @@ const DreamHomeHeader = () => {
             </div>
 
             <div className="header-text">
-                <h1>Apply For Your Dream Home</h1>
+                <h3> Application For  Appointment </h3>
+                <h1 className="text-xl font-bold mb-2">Apply For Your Dream Home</h1>
                 <p>Complete the rental application, and we will get in touch with you soon.</p>
             </div>
         </div>
